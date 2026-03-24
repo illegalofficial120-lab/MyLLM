@@ -24,19 +24,19 @@ class ModelConfig:
     vocab_size: int = 50257
 
     # Context window: max tokens the model can see at once (affects memory heavily)
-    max_seq_length: int = 128  # 128 is CPU-friendly; use 256+ if you have more RAM/GPU
+    max_seq_length: int = 256  # 128 is CPU-friendly; use 256+ if you have more RAM/GPU
 
     # Embedding size: dimension of each token representation
-    d_model: int = 128  # 128 for 8GB RAM; 256 or 512 for larger machines
+    d_model: int = 384  # 128 for 8GB RAM; 256 or 512 for larger machines
 
     # Number of attention heads (must divide d_model evenly)
-    n_heads: int = 4  # 4 or 8 typical for small models
+    n_heads: int = 8  # 4 or 8 typical for small models
 
     # Number of transformer layers (stack depth)
-    n_layers: int = 4  # 4–6 for laptop; 6–12 for larger training
+    n_layers: int = 10  # 4–6 for laptop; 6–12 for larger training
 
     # Feed-forward hidden size (often 4 * d_model)
-    d_ff: int = 512  # 4 * d_model when d_model=128
+    d_ff: int = 1536  # 4 * d_model when d_model=128
 
     dropout: float = 0.1
 
@@ -59,10 +59,10 @@ class TrainConfig:
     log_every: int = 50
 
     # Optimization (small batch + grad accumulation = effective large batch on CPU)
-    batch_size: int = 4  # Small for 8GB RAM
+    batch_size: int = 8  # Small for 8GB RAM
     gradient_accumulation_steps: int = 4  # Effective batch = batch_size * this
     learning_rate: float = 2e-4
-    max_steps: int = 5_000
+    max_steps: int = 40_000
     warmup_steps: int = 200
     weight_decay: float = 0.01
     grad_clip: float = 1.0
@@ -71,7 +71,7 @@ class TrainConfig:
     lr_schedule: str = "cosine"  # Cosine decay after warmup is often better
 
     # Device
-    device: str = "cpu"  # Prefer "cpu" for 8GB laptop; use "cuda" if GPU available
+    device: str = "cuda"  # Prefer "cpu" for 8GB laptop; use "cuda" if GPU available
 
     # Tokenizer
     tokenizer_path: Optional[str] = None
